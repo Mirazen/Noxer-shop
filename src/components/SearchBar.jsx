@@ -9,8 +9,18 @@ const SearchBar = ({ onSearch }) => {
       onSearch(searchTerm);
     }, 300);
 
-    return () => clearTimeout(timer);
+    return function cleanup() {
+      clearTimeout(timer);
+    };
   }, [searchTerm, onSearch]);
+
+  function handleChange(e) {
+    setSearchTerm(e.target.value);
+  }
+
+  function handleClear() {
+    setSearchTerm('');
+  }
 
   return (
     <div className="search-bar">
@@ -21,13 +31,10 @@ const SearchBar = ({ onSearch }) => {
           className="search-input"
           placeholder="Поиск товаров..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={handleChange}
         />
         {searchTerm && (
-          <button 
-            className="clear-button" 
-            onClick={() => setSearchTerm('')}
-          >
+          <button className="clear-button" onClick={handleClear}>
             ✕
           </button>
         )}

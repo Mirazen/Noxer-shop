@@ -16,60 +16,64 @@ function App() {
   const [frequentSearches, setFrequentSearches] = useState([]);
 
   useEffect(() => {
-    const loadInitialData = async () => {
+    async function loadData() {
       setLoading(true);
       
       const mainData = await getMainProducts();
-      if (mainData) {
-        setFrequentSearches(mainData.frequent_searches || []);
+      if (mainData && mainData.frequent_searches) {
+        setFrequentSearches(mainData.frequent_searches);
       }
       
       const allData = await filterProducts({}, 1, 50);
-      if (allData) {
-        setProducts(allData.products || []);
+      if (allData && allData.products) {
+        setProducts(allData.products);
         setTotalPages(allData.total_pages || 1);
       }
       
       setLoading(false);
-    };
+    }
 
-    loadInitialData();
+    loadData();
   }, []);
 
   useEffect(() => {
-    if (currentPage === 1 && !searchQuery) return;
-    
-    const loadProducts = async () => {
+    async function searchOrChangePage() {
       setLoading(true);
       
-      const filterObj = searchQuery ? { search: searchQuery } : {};
-      const data = await filterProducts(filterObj, currentPage, 50);
+      let filters = {};
+      if (searchQuery) {
+        filters.search = searchQuery;
+      }
       
-      if (data) {
-        setProducts(data.products || []);
+      const data = await filterProducts(filters, currentPage, 50);
+      
+      if (data && data.products) {
+        setProducts(data.products);
         setTotalPages(data.total_pages || 1);
       }
       
       setLoading(false);
-    };
+    }
 
-    loadProducts();
+    if (searchQuery || currentPage > 1) {
+      searchOrChangePage();
+    }
   }, [searchQuery, currentPage]);
 
-  const handleSearch = (query) => {
+  function handleSearch(query) {
     setSearchQuery(query);
     setCurrentPage(1);
-  };
+  }
 
-  const handleFrequentSearchClick = (search) => {
+  function handleFrequentSearchClick(search) {
     setSearchQuery(search);
     setCurrentPage(1);
-  };
+  }
 
-  const handlePageChange = (page) => {
+  function handlePageChange(page) {
     setCurrentPage(page);
     window.scrollTo(0, 0);
-  };
+  }
 
   return (
     <div className="app">

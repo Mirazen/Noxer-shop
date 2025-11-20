@@ -4,16 +4,29 @@ import '../styles/ProductCard.css';
 const ProductCard = ({ product }) => {
   const [imageError, setImageError] = useState(false);
   
-  const mainImage = product.images?.find(img => img.MainImage === true) || product.images?.[0];
-  const imageUrl = mainImage?.Image_URL || mainImage?.image_url;
+  let imageUrl = null;
+  if (product.images && product.images.length > 0) {
+    for (let i = 0; i < product.images.length; i++) {
+      if (product.images[i].MainImage === true) {
+        imageUrl = product.images[i].Image_URL || product.images[i].image_url;
+        break;
+      }
+    }
+    if (!imageUrl) {
+      imageUrl = product.images[0].Image_URL || product.images[0].image_url;
+    }
+  }
+
+  let discountPercent = 0;
+  if (product.old_price && product.old_price > product.price) {
+    discountPercent = Math.round(((product.old_price - product.price) / product.old_price) * 100);
+  }
 
   return (
     <div className="product-card">
       <div className="product-image-wrapper">
-        {product.old_price && product.old_price > product.price && (
-          <span className="discount-badge">
-            -{Math.round((1 - product.price / product.old_price) * 100)}%
-          </span>
+        {discountPercent > 0 && (
+          <span className="discount-badge">-{discountPercent}%</span>
         )}
         {!imageError && imageUrl ? (
           <img 
@@ -35,7 +48,7 @@ const ProductCard = ({ product }) => {
         
         <div className="product-pricing">
           <span className="product-price">
-            {product.price ? `${product.price} ₽` : 'Цена не указана'}
+            {product.price ? product.price + ' ₽' : 'Цена не указана'}
           </span>
           {product.old_price && product.old_price > product.price && (
             <span className="product-old-price">{product.old_price} ₽</span>
