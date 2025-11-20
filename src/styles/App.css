@@ -5,38 +5,32 @@
 }
 
 :root {
-  --primary-color: #2196F3;
+  --primary: #2196F3;
   --primary-dark: #1976D2;
-  --secondary-color: #FF5722;
-  --text-primary: #212121;
-  --text-secondary: #757575;
-  --background: #FAFAFA;
+  --secondary: #FF5722;
+  --text: #212121;
+  --text-light: #757575;
+  --bg: #FAFAFA;
   --white: #FFFFFF;
-  --border-color: #E0E0E0;
-  --success-color: #4CAF50;
-  --error-color: #F44336;
-  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --border: #E0E0E0;
+  --error: #F44336;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
-  color: var(--text-primary);
-  background-color: var(--background);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  color: var(--text);
+  background-color: var(--bg);
   line-height: 1.6;
 }
 
 .app {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 
 .main-container {
   max-width: 1440px;
   margin: 0 auto;
   padding: 20px;
-  width: 100%;
 }
 
 .search-section {
@@ -56,15 +50,14 @@ body {
 
 .loading-container,
 .empty-container {
-  grid-column: 1 / -1;
   text-align: center;
   padding: 60px 20px;
-  color: var(--text-secondary);
+  color: var(--text-light);
 }
 
 .spinner {
-  border: 4px solid var(--border-color);
-  border-top: 4px solid var(--primary-color);
+  border: 4px solid var(--border);
+  border-top: 4px solid var(--primary);
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -83,9 +76,8 @@ body {
 
 .frequent-title {
   font-size: 14px;
-  color: var(--text-secondary);
+  color: var(--text-light);
   margin-bottom: 10px;
-  font-weight: 500;
 }
 
 .search-tags {
@@ -97,32 +89,23 @@ body {
 .search-tag {
   padding: 6px 16px;
   background-color: var(--white);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border);
   border-radius: 20px;
   font-size: 14px;
-  color: var(--text-primary);
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .search-tag:hover {
-  background-color: var(--primary-color);
+  background-color: var(--primary);
   color: var(--white);
-  border-color: var(--primary-color);
-}
-
-/* Адаптивность */
-@media (max-width: 1024px) {
-  .product-grid {
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 15px;
-  }
+  border-color: var(--primary);
 }
 
 @media (max-width: 768px) {
   .product-grid {
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 12px;
+    gap: 15px;
   }
   
   .main-container {
@@ -138,10 +121,6 @@ body {
   
   .main-container {
     padding: 10px;
-  }
-  
-  .search-section {
-    margin-bottom: 20px;
   }
 }
 

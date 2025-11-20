@@ -7,20 +7,20 @@
   display: flex;
   align-items: center;
   background-color: var(--white);
-  border: 2px solid var(--border-color);
+  border: 2px solid var(--border);
   border-radius: 8px;
   padding: 12px 16px;
   transition: border-color 0.2s;
 }
 
 .search-input-wrapper:focus-within {
-  border-color: var(--primary-color);
+  border-color: var(--primary);
 }
 
 .search-icon {
   font-size: 20px;
   margin-right: 12px;
-  color: var(--text-secondary);
+  color: var(--text-light);
 }
 
 .search-input {
@@ -28,26 +28,26 @@
   border: none;
   outline: none;
   font-size: 16px;
-  color: var(--text-primary);
+  color: var(--text);
   background: transparent;
 }
 
 .search-input::placeholder {
-  color: var(--text-secondary);
+  color: var(--text-light);
 }
 
 .clear-button {
   background: none;
   border: none;
   font-size: 20px;
-  color: var(--text-secondary);
+  color: var(--text-light);
   cursor: pointer;
   padding: 0 5px;
   transition: color 0.2s;
 }
 
 .clear-button:hover {
-  color: var(--text-primary);
+  color: var(--text);
 }
 
 @media (max-width: 600px) {

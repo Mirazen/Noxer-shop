@@ -4,36 +4,24 @@ import '../styles/ProductCard.css';
 const ProductCard = ({ product }) => {
   const [imageError, setImageError] = useState(false);
   
-  const {
-    name,
-    price,
-    old_price,
-    image,
-    in_stock,
-    stock,
-    rating,
-    reviews_count,
-    discount
-  } = product;
-
-  const isInStock = in_stock !== false && stock !== 0 && stock !== false;
-
-  const handleImageError = () => {
-    setImageError(true);
-  };
+  const mainImage = product.images?.find(img => img.MainImage === true) || product.images?.[0];
+  const imageUrl = mainImage?.Image_URL || mainImage?.image_url;
 
   return (
     <div className="product-card">
       <div className="product-image-wrapper">
-        {discount && discount > 0 && <span className="discount-badge">-{discount}%</span>}
-        {!isInStock && <span className="stock-badge">Нет в наличии</span>}
-        {!imageError && image ? (
+        {product.old_price && product.old_price > product.price && (
+          <span className="discount-badge">
+            -{Math.round((1 - product.price / product.old_price) * 100)}%
+          </span>
+        )}
+        {!imageError && imageUrl ? (
           <img 
-            src={image} 
+            src={imageUrl} 
             alt=""
             className="product-image"
             loading="lazy"
-            onError={handleImageError}
+            onError={() => setImageError(true)}
           />
         ) : (
           <div className="product-image-placeholder">
@@ -43,25 +31,19 @@ const ProductCard = ({ product }) => {
       </div>
       
       <div className="product-info">
-        <h3 className="product-name">{name}</h3>
-        
-        {rating && rating > 0 && (
-          <div className="product-rating">
-            <span className="stars">{'★'.repeat(Math.floor(rating))}{'☆'.repeat(5 - Math.floor(rating))}</span>
-            {reviews_count && reviews_count > 0 && <span className="reviews">({reviews_count})</span>}
-          </div>
-        )}
+        <h3 className="product-name">{product.name}</h3>
         
         <div className="product-pricing">
-          <span className="product-price">{price ? `${price} ₽` : 'Цена не указана'}</span>
-          {old_price && old_price > price && <span className="product-old-price">{old_price} ₽</span>}
+          <span className="product-price">
+            {product.price ? `${product.price} ₽` : 'Цена не указана'}
+          </span>
+          {product.old_price && product.old_price > product.price && (
+            <span className="product-old-price">{product.old_price} ₽</span>
+          )}
         </div>
         
-        <button 
-          className={`add-to-cart-button ${!isInStock ? 'disabled' : ''}`}
-          disabled={!isInStock}
-        >
-          {isInStock ? 'В корзину' : 'Недоступно'}
+        <button className="add-to-cart-button">
+          В корзину
         </button>
       </div>
     </div>

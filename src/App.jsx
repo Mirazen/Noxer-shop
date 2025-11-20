@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import SearchBar from './components/SearchBar';
 import FrequentSearches from './components/FrequentSearches';
@@ -9,24 +9,25 @@ import './styles/App.css';
 
 function App() {
   const [products, setProducts] = useState([]);
-  const [initialProducts, setInitialProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [frequentSearches, setFrequentSearches] = useState([]);
-  const perPage = 50;
 
   useEffect(() => {
     const loadInitialData = async () => {
       setLoading(true);
-      const data = await getMainProducts();
       
-      if (data) {
-        const productsList = data.products || [];
-        setProducts(productsList);
-        setInitialProducts(productsList);
-        setFrequentSearches(data.frequent_searches || []);
+      const mainData = await getMainProducts();
+      if (mainData) {
+        setFrequentSearches(mainData.frequent_searches || []);
+      }
+      
+      const allData = await filterProducts({}, 1, 50);
+      if (allData) {
+        setProducts(allData.products || []);
+        setTotalPages(allData.total_pages || 1);
       }
       
       setLoading(false);
@@ -35,38 +36,17 @@ function App() {
     loadInitialData();
   }, []);
 
-  const handleSearch = useCallback((query) => {
-    setSearchQuery(query);
-    setCurrentPage(1);
-  }, []);
-
-  const handleFrequentSearchClick = useCallback((search) => {
-    setSearchQuery(search);
-    setCurrentPage(1);
-  }, []);
-
-  const handlePageChange = useCallback((page) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
-
   useEffect(() => {
+    if (currentPage === 1 && !searchQuery) return;
+    
     const loadProducts = async () => {
-      if (!searchQuery.trim()) {
-        setProducts(initialProducts);
-        setCurrentPage(1);
-        setTotalPages(1);
-        return;
-      }
-
       setLoading(true);
       
-      const filterObj = { search: searchQuery };
-      const data = await filterProducts(filterObj, currentPage, perPage);
+      const filterObj = searchQuery ? { search: searchQuery } : {};
+      const data = await filterProducts(filterObj, currentPage, 50);
       
       if (data) {
         setProducts(data.products || []);
-        setCurrentPage(data.current_page || 1);
         setTotalPages(data.total_pages || 1);
       }
       
@@ -74,7 +54,22 @@ function App() {
     };
 
     loadProducts();
-  }, [searchQuery, currentPage, initialProducts]);
+  }, [searchQuery, currentPage]);
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    setCurrentPage(1);
+  };
+
+  const handleFrequentSearchClick = (search) => {
+    setSearchQuery(search);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
+  };
 
   return (
     <div className="app">

@@ -1,27 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/SearchBar.css';
 
-const SearchBar = ({ onSearch, placeholder = "Поиск товаров..." }) => {
+const SearchBar = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      if (searchTerm.trim() || searchTerm === '') {
-        onSearch(searchTerm);
-      }
+    const timer = setTimeout(() => {
+      onSearch(searchTerm);
     }, 300);
 
-    return () => clearTimeout(delayDebounce);
+    return () => clearTimeout(timer);
   }, [searchTerm, onSearch]);
-
-  const handleChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
-
-  const handleClear = () => {
-    setSearchTerm('');
-    onSearch('');
-  };
 
   return (
     <div className="search-bar">
@@ -30,15 +19,14 @@ const SearchBar = ({ onSearch, placeholder = "Поиск товаров..." }) =
         <input
           type="text"
           className="search-input"
-          placeholder={placeholder}
+          placeholder="Поиск товаров..."
           value={searchTerm}
-          onChange={handleChange}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
         {searchTerm && (
           <button 
             className="clear-button" 
-            onClick={handleClear}
-            aria-label="Очистить"
+            onClick={() => setSearchTerm('')}
           >
             ✕
           </button>

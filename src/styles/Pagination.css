@@ -10,9 +10,9 @@
 .pagination-button {
   padding: 10px 20px;
   background-color: var(--white);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border);
   border-radius: 6px;
-  color: var(--text-primary);
+  color: var(--text);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -20,9 +20,9 @@
 }
 
 .pagination-button:hover:not(:disabled) {
-  background-color: var(--primary-color);
+  background-color: var(--primary);
   color: var(--white);
-  border-color: var(--primary-color);
+  border-color: var(--primary);
 }
 
 .pagination-button:disabled {
@@ -40,9 +40,9 @@
   height: 40px;
   padding: 0 12px;
   background-color: var(--white);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border);
   border-radius: 6px;
-  color: var(--text-primary);
+  color: var(--text);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -53,13 +53,13 @@
 }
 
 .pagination-number:hover {
-  background-color: var(--background);
+  background-color: var(--bg);
 }
 
 .pagination-number.active {
-  background-color: var(--primary-color);
+  background-color: var(--primary);
   color: var(--white);
-  border-color: var(--primary-color);
+  border-color: var(--primary);
 }
 
 .pagination-ellipsis {
@@ -68,7 +68,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-secondary);
+  color: var(--text-light);
 }
 
 @media (max-width: 600px) {
